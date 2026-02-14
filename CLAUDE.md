@@ -19,6 +19,10 @@ Durable AI Agents for SAP. 4-hour workshop for SAP architects introducing Tempor
 - SAP services: Generative AI Hub, HANA Cloud, Business Agent Foundation (BAF), Joule
 - Integration: `@sap/ai-sdk-vercel-adapter` with Vercel AI SDK `generateText()`
 
+## Workshop Exercises (Definitive)
+
+**`workshop-exercises.md`** is the definitive per-hour breakdown of what's been built and what's left to do. Check this first for current state of each hour.
+
 ## CRITICAL: Definitive Customer Ask
 
 **`resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf`** is THE definitive ask from the customer. All workshop planning must conform to this document. Extracted to **`resources/customer-ask-extracted.md`** for easy reference. If agenda discussions drift, defer to this PDF.

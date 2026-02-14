@@ -40,6 +40,14 @@ Uses the mock BAF server + SAP agent connector. Three terminals:
 
 Full step-by-step: [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTIONS.md) (sections 1-6)
 
+### TODO: Additional content from customer ask (likely slides)
+
+- Problem space scenarios beyond BafAgentClient: deep research agent crash (hours lost), multi-agent orchestration failure (inconsistent state), long-running task timeout (no progress preserved), downstream A2A call failure (context lost)
+- "Temporal as Durable Foundation" explainer table: normal async function → record of every step, `await` → resumable checkpoint, crash → auto-restart from last checkpoint, external call fails → retry with backoff
+- Vision: cross-cutting durable services — Gen AI Hub (LLM calls auto-durable, token tracking across retries), Observability (OTEL traces per workflow step, Dynatrace/Jaeger/SAP Cloud Logging), HANA Cloud (workflow state persistence)
+- Key Insights: Temporal replays deterministic steps from history, skips completed activities, resumes from exact crash point
+- Discussion: durability-aware Gen AI Hub — retry on 429/5xx with backoff, don't double-charge retried requests, token usage aggregated across retries, model fallback (e.g. Claude → GPT)
+
 ## Hour 2: Hands-On — Local Setup + AI SDK
 
 Three exercises, escalating complexity:
