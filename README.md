@@ -26,6 +26,8 @@
 
 Live crash demo showing the vulnerability in `BafAgentClient.ts`, then Temporal intro and discussion.
 
+> **Run it:** [`references/DEMO-INSTRUCTIONS.md` — Part 1: Crash Demo](references/DEMO-INSTRUCTIONS.md#part-1-crash-demo)
+
 ### Crash Demo
 
 Uses the mock BAF server + SAP agent connector. Three terminals:
@@ -115,6 +117,8 @@ For the workshop, LiteLLM replaces this since participants may not have SAP Gen 
 ## Hour 3: Hands-On — Dispute Resolution w/ Durability
 
 Separate project from Hour 2. The BafAgentClient polling loop re-architected with Temporal. Delivered as a complete working project (`references/temporal-dispute-resolution/`). Same BAF HTTP calls, now durable.
+
+> **Run it:** [`references/DEMO-INSTRUCTIONS.md` — Part 2: Durable Version](references/DEMO-INSTRUCTIONS.md#part-2-durable-version--temporal-dispute-resolution)
 
 ### The problem (walkthrough from Hour 1)
 
