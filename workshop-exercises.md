@@ -4,7 +4,41 @@ Definitive per-hour breakdown of hands-on exercises for the SAP x Temporal works
 
 ## Hour 1: Why Durability Matters
 
-_TODO: define — demo of BafAgentClient crash vulnerability, Temporal intro, discussion_
+Live crash demo showing the vulnerability in `BafAgentClient.ts`, then Temporal intro and discussion.
+
+### Crash Demo
+
+Uses the mock BAF server + SAP agent connector. Three terminals:
+
+1. **Mock BAF** (`references/mock-baf/`) — Express server on port 3001, simulates BAF polling state machine (polls 1-4 → pending, 5-11 → running, 12+ → success)
+2. **Agent Connector** (`references/btp-a2a-dispute-resolution/.../agent-builder-a2a-agent-connector/`) — CDS server on port 4004, runs `BafAgentClient.ts`
+3. **Client terminal** — curl sends A2A `message/send` request to trigger a dispute
+
+### Demo flow
+
+1. Start mock BAF and agent connector
+2. Trigger a dispute via curl — watch the polling loop progress in both terminals
+3. Let it complete once (happy path) so participants see the full state machine
+4. Trigger a second dispute, background the curl (`&`)
+5. **Kill the agent connector** (`Ctrl+C`) after Poll #2-3
+6. Show what was lost: `chatId`, `historyId`, loop position, task store, event bus — all in-memory, all gone
+7. Restart the agent connector — blank slate, zero recovery, orphaned BAF chat
+
+### Key vulnerability points walked through
+
+- `chatId`/`historyId` in local variables in `invokeAgentSync()` — gone on crash
+- `while(true)` loop position in `triggerStatusUpdate()` — gone on crash
+- `sleep(1500)` — JS setTimeout, no persistence
+- `InMemoryTaskStore` — A2A task state also non-durable
+- `ExecutionEventBus` subscribers — in-memory
+
+### Discussion points
+
+- No checkpointing, no WAL, no external state store
+- BAF chat still exists server-side but connector can't find or resume it
+- **This is what Temporal solves** — workflow replaces the loop, timers survive crashes, full execution history persisted
+
+Full step-by-step: [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTIONS.md) (sections 1-6)
 
 ## Hour 2: Hands-On — Local Setup + AI SDK
 
@@ -50,36 +84,92 @@ For the workshop, LiteLLM replaces this since participants may not have SAP Gen 
 
 ## Hour 3: Hands-On — Dispute Resolution w/ Durability
 
-Separate project from Hour 2. A modified version of the BafAgentClient codebase, re-architected with Temporal. Delivered fully working (or near-complete with minor participant modifications — TBD). The flex: same project, same behavior, now durable.
+Separate project from Hour 2. The BafAgentClient polling loop re-architected with Temporal. Delivered as a complete working project (`references/temporal-dispute-resolution/`). Same BAF HTTP calls, now durable.
 
-### The problem (walkthrough)
+### The problem (walkthrough from Hour 1)
 
-Show participants BafAgentClient.ts. Walk through crash vulnerability points:
-- `chatId`/`historyId` in local variables — gone on crash
-- `while(true)` loop position — gone on crash
-- `sleep(1500)` holds a process — crash during sleep loses everything
-- `InMemoryTaskStore` — A2A task state also non-durable
+Recap `BafAgentClient.ts` crash vulnerability — `chatId`/`historyId` in local vars, `while(true)` loop, `sleep(1500)`, `InMemoryTaskStore`. All gone on crash.
 
 ### Mock BAF server
 
-Simple Express app that simulates the BAF state machine. Needed because participants won't have live BAF access. Trivially simple — the real BAF agent has `"tools": []` and just roleplays S/4HANA lookups via LLM prompt instructions. Mock is just a timer-based state machine (~30 lines): a few polls in `pending`, a few in `running`, then `success` with canned dispute resolution text.
+Same server from Hour 1 crash demo (`references/mock-baf/`). Express on port 3001, simulates BAF polling state machine. Per-chat poll counter drives deterministic state transitions: polls 1-4 → `pending`, 5-11 → `running`, 12+ → `success`.
 
-- `POST /api/v1/Agents/:agentId/chats` → create chat, return `chatId`
-- `POST .../chats/:chatId/sendMessage` → accept message, return `historyId`
-- `GET .../chats/:chatId?$select=state` → walk through `pending → running → success` over ~5 polls
-- `GET .../chats/:chatId/history/:historyId/trace` → return mock agent reasoning
-- `GET .../history?$filter=...` → return mock final answer
+Endpoints:
+- `POST /api/v1/Agents(:agentId)/chats` → create chat, return `chatId`
+- `POST .../chats(:chatId)/UnifiedAiAgentService.sendMessage` → accept message, return `historyId`
+- `GET .../chats(:chatId)?$select=state` → poll state (increments counter)
+- `GET .../chats(:chatId)/history(:historyId)/trace` → mock agent reasoning traces
+- `GET .../chats(:chatId)/history?$filter=...` → mock final answer
+- `POST /oauth/token` → mock OAuth token
 
-**Live/mock switch:** Design the project so BAF endpoint is configurable (env var or config). Participants with live BAF access point at real instance; everyone else uses mock server. Same code path either way.
+**Live/mock switch:** BAF endpoint is configurable. Participants with live BAF access point at real instance; everyone else uses mock server. Same code path either way.
+
+### How the original maps to Temporal
+
+| Original (`BafAgentClient.ts`) | Temporal Version | File |
+|---|---|---|
+| `invokeAgentSync()` — create chat + send message | `invokeBAF()` activity — same HTTP calls, auto-retried | `activities.ts` |
+| `triggerStatusUpdate()` — `while(true)` polling loop | `disputeResolutionWorkflow()` — durable loop, crash-safe | `workflows.ts` |
+| Poll state GET inside while loop | `checkState()` activity — individual HTTP call, retryable | `activities.ts` |
+| Trace fetch during `running` state | `getTrace()` activity | `activities.ts` |
+| Final answer fetch on `success` | `getResult()` activity | `activities.ts` |
+| `sleep(1500)` — JS setTimeout, lost on crash | `workflow.sleep('1500ms')` — durable timer on Temporal server | `workflows.ts` |
+| `eventBus.publish()` for status updates | `defineQuery('getStatus')` — queryable from CLI/UI | `workflows.ts` |
+| `chatId`/`historyId` in local variables | Stored in Temporal event history — recovered on replay | `workflows.ts` |
+
+### 4 Activities (`activities.ts`)
+
+1. **`invokeBAF(config, taskId, message)`** — POST to create chat + send message, returns `{ chatId, historyId }`
+2. **`checkState(config, chatId)`** — GET poll for state, returns state string (`pending`, `running`, `success`, `error`)
+3. **`getTrace(config, chatId, historyId)`** — GET agent trace during `running` state, returns concatenated thoughts
+4. **`getResult(config, chatId, historyId)`** — GET final answer on `success`, returns resolution text
+
+All activities have `startToCloseTimeout: '30s'` with default retry policy. Token caching is module-level in the activity code (cheap to re-fetch on worker restart).
+
+### Workflow (`workflows.ts`)
+
+```
+disputeResolutionWorkflow(disputeMessage)
+  → invokeBAF() → { chatId, historyId }
+  → loop:
+      checkState(chatId)
+      switch(state):
+        pending/none: update status string
+        running: getTrace() → update status with agent thoughts
+        success: getResult() → return final answer
+        error: throw
+      workflow.sleep('1500ms')
+      repeat
+```
+
+Status exposed via `defineQuery('getStatus')` — queryable with `temporal workflow query --workflow-id <id> --name getStatus` while running or after completion.
+
+### Worker (`worker.ts`) + Client (`client.ts`)
+
+- **Worker** — connects to `localhost:7233`, task queue `dispute-resolution`, registers workflows + activities
+- **Client** — starts workflow with dispute message, generates workflow ID via nanoid, prints Temporal UI link, blocks until result
 
 ### Exercise steps
 
-1. **Show the original** — walk through BafAgentClient.ts, identify crash points
-2. **Build Activities** — `invokeBAF()` (HTTP POST to create chat + send message), `checkState()` (HTTP GET poll), `publishStatus()` (side effect / event bus)
-3. **Build Workflow** — durable `while(true)` loop: `invokeBAF → checkState → switch(state) → publishStatus → workflow.sleep('1.5s') → loop`
-4. **Build Worker + Client** — wire it up, start the workflow
-5. **Kill the worker mid-loop** — restart it, watch Temporal resume from exact crash point. `chatId`/`historyId` preserved as workflow state. Sleep resumes where it left off.
-6. **Watch the Magic** — Temporal UI shows full history: every poll recorded, every state transition visible, crash + recovery clearly shown
+1. **Walk through the mapping** — show how each piece of `BafAgentClient.ts` maps to workflows/activities
+2. **Start Temporal dev server** — `temporal server start-dev`
+3. **Start mock BAF** — `cd references/mock-baf && npm start`
+4. **Start worker** — `cd references/temporal-dispute-resolution && npm start`
+5. **Run a dispute** — `npx ts-node src/client.ts 'Ali from XStore disputes order ORD0006...'` — watch it complete (~18s)
+6. **Query status** — `temporal workflow query --workflow-id <id> --name getStatus`
+7. **THE RECOVERY DEMO** — start another dispute, `pkill -9 -f "temporal-dispute-resolution.*worker"` after Poll #3-4, verify workflow still RUNNING on server, restart worker, watch it replay + resume + complete
+8. **Explore Temporal UI** — event history, activity inputs/outputs, timers, crash + recovery visible
+
+### What survived the crash
+
+| State | Crash Demo (BafAgentClient) | Temporal Version |
+|---|---|---|
+| `chatId` / `historyId` | Lost (local variables) | Restored from event history |
+| Poll loop position | Lost (while loop iterator) | Replayed from workflow state |
+| Sleep timer | Lost (JS setTimeout) | Durable timer on Temporal server |
+| Kill behavior | Process dead, task gone forever | Worker restarts, workflow resumes |
+| Observability | None — printf debugging only | Full event history in Temporal UI |
+| Status updates | `eventBus.publish()` (in-memory) | `workflow.query('getStatus')` (durable) |
 
 ### What's NOT in Hour 3
 
@@ -94,6 +184,8 @@ Same code structure as BafAgentClient (`while(true)`, poll, sleep, switch on sta
 ### Teaching moment
 
 The BAF agent is an opaque box with no real tools — it fakes S/4HANA lookups via prompt. Contrast with Hour 2's agent where every tool call is an individually durable, retryable, observable Activity. Natural bridge to Hour 4's "what if this was built natively with Temporal?" discussion.
+
+Full step-by-step: [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTIONS.md) (sections 7-8 for recovery demo)
 
 ## Hour 4: Vision and Discussion
 
