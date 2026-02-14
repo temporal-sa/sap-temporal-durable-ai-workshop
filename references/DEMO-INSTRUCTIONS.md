@@ -1,4 +1,36 @@
-# Crash Demo: SAP Dispute Resolution Agent
+# Demo Instructions: SAP Dispute Resolution
+
+Two demos back-to-back: first crash the original, then show Temporal recovering from the same failure.
+
+## Table of Contents
+
+### Part 1: Crash Demo (Hour 1)
+
+- [Prerequisites](#prerequisites)
+- [1. Start the Mock BAF Server](#1-start-the-mock-baf-server-serverts)
+- [2. Start the Agent Connector](#2-start-the-agent-connector-serverts)
+- [3. Trigger a Dispute](#3-trigger-a-dispute)
+- [4. Watch the Polling](#4-watch-the-polling)
+- [5. THE CRASH DEMO](#5-the-crash-demo)
+- [6. What Was Lost](#6-what-was-lost)
+- [7. Discussion Points](#7-discussion-points)
+
+### Part 2: Durable Version — Temporal (Hour 3)
+
+- [Prerequisites](#prerequisites-1)
+- [How It Maps to the Original Code](#how-it-maps-to-the-original-code)
+- [1. Start Temporal Dev Server](#1-start-temporal-dev-server)
+- [2. Start Mock BAF Server](#2-start-mock-baf-server-serverts)
+- [3. Start the Temporal Worker](#3-start-the-temporal-worker-workerts)
+- [4. Run a Dispute](#4-run-a-dispute-clientts)
+- [5. Query Workflow Status](#5-query-workflow-status-defined-in-workflowsts)
+- [6. THE RECOVERY DEMO](#6-the-recovery-demo)
+- [7. What Survived the Crash](#7-what-survived-the-crash)
+- [8. Explore in Temporal UI](#8-explore-in-temporal-ui)
+
+---
+
+# Part 1: Crash Demo
 
 Demonstrates the crash vulnerability in [`BafAgentClient.ts`](btp-a2a-dispute-resolution/agents/sap-agent-builder-a2a/agent-builder-a2a-agent-connector/srv/BafAgentClient.ts) — the `while(true)` polling loop holds all state in memory. Kill the process mid-poll and everything is lost.
 
@@ -149,7 +181,7 @@ The mock BAF server is still running and the chat state is still there — but t
 
 ---
 
-# Durable Version: Temporal Dispute Resolution
+# Part 2: Durable Version — Temporal Dispute Resolution
 
 Same BAF polling logic, now orchestrated by Temporal. Kill the worker mid-poll, restart it, and the workflow resumes automatically — `chatId`, `historyId`, and loop position restored from event history.
 
