@@ -86,10 +86,13 @@ app.get("/api/v1/*", (req, res) => {
     }
     // Strip query string from the parens segment
     const chatId = extractId(chatIdRaw.split("?")[0]);
-    const chat = chats.get(chatId);
+    let chat = chats.get(chatId);
     if (!chat) {
-      res.status(404).json({ error: "Chat not found" });
-      return;
+      // Auto-vivify: simulates real BAF where chats survive server restarts (backed by DB).
+      // Temporal retried the activity after our restart — chat state resumes from poll 1.
+      console.log(`[mock-baf] Chat ${chatId.slice(0, 8)}... not found — re-creating (simulating DB-backed persistence)`);
+      chat = { historyId: "recovered", pollCount: 0 };
+      chats.set(chatId, chat);
     }
     chat.pollCount++;
     const state = getState(chat.pollCount);

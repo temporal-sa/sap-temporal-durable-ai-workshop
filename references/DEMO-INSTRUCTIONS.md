@@ -24,9 +24,10 @@ Two demos back-to-back: first crash the original, then show Temporal recovering 
 - [3. Start the Temporal Worker](#3-start-the-temporal-worker-workerts)
 - [4. Run a Dispute](#4-run-a-dispute-clientts)
 - [5. Query Workflow Status](#5-query-workflow-status-defined-in-workflowsts)
-- [6. THE RECOVERY DEMO](#6-the-recovery-demo)
-- [7. What Survived the Crash](#7-what-survived-the-crash)
-- [8. Explore in Temporal UI](#8-explore-in-temporal-ui)
+- [6. THE RECOVERY DEMO — Worker Crash](#6-the-recovery-demo--worker-crash)
+- [7. THE RECOVERY DEMO — Downstream Service Outage](#7-the-recovery-demo--downstream-service-outage)
+- [8. What Survived](#8-what-survived)
+- [9. Explore in Temporal UI](#9-explore-in-temporal-ui)
 
 ---
 
@@ -275,7 +276,7 @@ temporal workflow query --workflow-id <workflow-id> --name getStatus
 
 Returns the current status string (e.g., `running (poll #7): Analyzing dispute...`).
 
-## 6. THE RECOVERY DEMO
+## 6. THE RECOVERY DEMO — Worker Crash
 
 This is the key teaching moment. Start another dispute:
 
@@ -317,18 +318,56 @@ Watch what happens:
 
 **No duplicate chat creation. No lost state. No manual recovery.**
 
-## 7. What Survived the Crash
+## 7. THE RECOVERY DEMO — Downstream Service Outage
 
-| State | Crash Demo (BafAgentClient) | Temporal Version |
+Different failure mode: the BAF service itself goes down. In production, this is an SAP service outage — Temporal handles it with automatic activity retries.
+
+Start another dispute:
+
+```bash
+cd references/temporal-dispute-resolution
+npx ts-node src/client.ts 'Downstream outage test' &
+```
+
+Watch the **worker terminal** — after you see **Poll #3 or #4**:
+
+### Kill the mock BAF server: `Ctrl+C` in the mock BAF terminal.
+
+The **worker terminal** now shows activity failures and retries:
+```
+[WARN] Activity checkState failed, retrying...
+```
+
+Open the **Temporal UI** (http://localhost:8233) — click into the workflow and watch the pending activity. You'll see retry attempts accumulating in real time.
+
+> **Talking point:** In the crash demo (Part 1), when the downstream service died, the agent connector just got an error and the whole task was lost. Here, Temporal keeps retrying — no human intervention needed. The workflow is patiently waiting for BAF to come back.
+
+### Restart mock BAF:
+
+```bash
+cd references/mock-baf
+npm start
+```
+
+Watch what happens:
+1. The next retry succeeds — mock BAF auto-recovers the chat session
+2. Polling resumes: pending → running → success
+3. The workflow completes as if nothing happened
+
+**The workflow survived both a worker crash AND a downstream service outage.**
+
+## 8. What Survived
+
+| Failure | Crash Demo (BafAgentClient) | Temporal Version |
 |---|---|---|
+| Worker/process crash | All state lost, task gone forever | Workflow replays, state restored from event history |
+| Downstream service outage | Error returned, no recovery path | Activity retries automatically until service returns |
 | `chatId` / `historyId` | Lost (local variables) | Restored from event history |
 | Poll loop position | Lost (while loop iterator) | Replayed from workflow state |
 | Sleep timer | Lost (JS setTimeout) | Durable timer on Temporal server |
-| Kill behavior | Process dead, task gone forever | Worker restarts, workflow resumes |
 | Observability | None — printf debugging only | Full event history in Temporal UI |
-| Status updates | `eventBus.publish()` (in-memory) | `workflow.query('getStatus')` (durable) |
 
-## 8. Explore in Temporal UI
+## 9. Explore in Temporal UI
 
 Open http://localhost:8233 and click on the workflow:
 

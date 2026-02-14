@@ -191,19 +191,20 @@ Status exposed via `defineQuery('getStatus')` — queryable with `temporal workf
 4. **Start worker** — `cd references/temporal-dispute-resolution && npm start`
 5. **Run a dispute** — `npx ts-node src/client.ts 'Ali from XStore disputes order ORD0006...'` — watch it complete (~18s)
 6. **Query status** — `temporal workflow query --workflow-id <id> --name getStatus`
-7. **THE RECOVERY DEMO** — start another dispute, `pkill -9 -f "temporal-dispute-resolution.*worker"` after Poll #3-4, verify workflow still RUNNING on server, restart worker, watch it replay + resume + complete
-8. **Explore Temporal UI** — event history, activity inputs/outputs, timers, crash + recovery visible
+7. **RECOVERY DEMO: Worker crash** — start another dispute, `pkill -9 -f "temporal-dispute-resolution.*worker"` after Poll #3-4, verify workflow still RUNNING on server, restart worker, watch it replay + resume + complete
+8. **RECOVERY DEMO: Downstream outage** — start another dispute, kill mock BAF mid-poll, watch activity retries in Temporal UI, restart mock BAF, workflow resumes and completes
+9. **Explore Temporal UI** — event history, activity inputs/outputs, timers, crash + recovery visible
 
 ### What survived the crash
 
-| State | Crash Demo (BafAgentClient) | Temporal Version |
+| Failure | Crash Demo (BafAgentClient) | Temporal Version |
 |---|---|---|
+| Worker/process crash | All state lost, task gone forever | Workflow replays, state restored from event history |
+| Downstream service outage | Error returned, no recovery path | Activity retries automatically until service returns |
 | `chatId` / `historyId` | Lost (local variables) | Restored from event history |
 | Poll loop position | Lost (while loop iterator) | Replayed from workflow state |
 | Sleep timer | Lost (JS setTimeout) | Durable timer on Temporal server |
-| Kill behavior | Process dead, task gone forever | Worker restarts, workflow resumes |
 | Observability | None — printf debugging only | Full event history in Temporal UI |
-| Status updates | `eventBus.publish()` (in-memory) | `workflow.query('getStatus')` (durable) |
 
 ### What's NOT in Hour 3
 
@@ -219,7 +220,7 @@ Same code structure as BafAgentClient (`while(true)`, poll, sleep, switch on sta
 
 The BAF agent is an opaque box with no real tools — it fakes S/4HANA lookups via prompt. Contrast with Hour 2's agent where every tool call is an individually durable, retryable, observable Activity. Natural bridge to Hour 4's "what if this was built natively with Temporal?" discussion.
 
-Full step-by-step: [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTIONS.md) (sections 7-8 for recovery demo)
+Full step-by-step: [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTIONS.md) (sections 6-9 for recovery demos)
 
 ## Hour 4: Vision and Discussion
 
