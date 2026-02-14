@@ -21,7 +21,7 @@ Durable AI Agents for SAP. 4-hour workshop for SAP architects introducing Tempor
 
 ## Workshop Exercises (Definitive)
 
-**`workshop-exercises.md`** is the definitive per-hour breakdown of what's been built and what's left to do. Check this first for current state of each hour.
+**`README.md`** is the definitive per-hour breakdown of what's been built and what's left to do. Check this first for current state of each hour.
 
 ## CRITICAL: Definitive Customer Ask
 

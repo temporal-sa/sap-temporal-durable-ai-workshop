@@ -1,6 +1,26 @@
-# Workshop Exercises — What We're Building
+# SAP x Temporal Workshop — Durable AI Agents for SAP
 
-Definitive per-hour breakdown of hands-on exercises for the SAP x Temporal workshop.
+4-hour workshop for SAP architects introducing Temporal as a durable execution platform for SAP agents. Participants build progressively — from Hello World to crashing and recovering a real SAP dispute resolution workflow.
+
+**Audience:** SAP senior developers, no prior Temporal experience. **Language:** TypeScript.
+
+## Status
+
+| Hour | Status |
+|---|---|
+| [Hour 1: Why Durability Matters](#hour-1-why-durability-matters) | Crash demo done; slides/presentation content TODO |
+| [Hour 2: Hands-On — Local Setup + AI SDK](#hour-2-hands-on--local-setup--ai-sdk) | TODO — reference samples exist, exercise scaffolding needed |
+| [Hour 3: Hands-On — Dispute Resolution w/ Durability](#hour-3-hands-on--dispute-resolution-w-durability) | Done |
+| [Hour 4: Vision and Discussion](#hour-4-vision-and-discussion) | TODO |
+
+## Key files and repos
+
+- **Demo instructions:** [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTIONS.md) — step-by-step for crash demo (Hour 1) and recovery demo (Hour 3)
+- **Original SAP repo:** [`references/btp-a2a-dispute-resolution/`](references/btp-a2a-dispute-resolution/) — cloned from [SAP-samples/btp-a2a-dispute-resolution](https://github.com/SAP-samples/btp-a2a-dispute-resolution). Key file: [`srv/BafAgentClient.ts`](references/btp-a2a-dispute-resolution/agents/sap-agent-builder-a2a/agent-builder-a2a-agent-connector/srv/BafAgentClient.ts)
+- **Mock BAF server:** [`references/mock-baf/`](references/mock-baf/) — Express on port 3001, simulates BAF polling state machine
+- **Temporal dispute resolution:** [`references/temporal-dispute-resolution/`](references/temporal-dispute-resolution/) — durable version of BafAgentClient (Hour 3 deliverable)
+- **TS samples (Hour 2 basis):** [`references/samples-typescript/`](references/samples-typescript/) — hello-world (`hello-world/`), ai-sdk haiku + tools agents (`ai-sdk/`)
+- **Customer ask:** [`resources/customer-ask-extracted.md`](resources/customer-ask-extracted.md) (extracted from [`resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf`](resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf))
 
 ## Hour 1: Why Durability Matters
 
@@ -49,6 +69,8 @@ Full step-by-step: [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTI
 - Discussion: durability-aware Gen AI Hub — retry on 429/5xx with backoff, don't double-charge retried requests, token usage aggregated across retries, model fallback (e.g. Claude → GPT)
 
 ## Hour 2: Hands-On — Local Setup + AI SDK
+
+_TODO: exercise scaffolding needed. Reference implementations exist in [`references/samples-typescript/`](references/samples-typescript/) (hello-world, ai-sdk). Need to create participant-facing exercises, wire up LiteLLM as credential-free model provider._
 
 Three exercises, escalating complexity:
 
