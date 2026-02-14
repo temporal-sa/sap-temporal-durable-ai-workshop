@@ -1,0 +1,102 @@
+{
+    "$schema": "https://cdn.statically.io/gh/nguyenngoclongdev/cdn/main/schema/v11/terminal-keeper.json",
+    "theme": "tribe",
+    "active": "temporal-demo",
+    "activateOnStartup": true,
+    "keepExistingTerminals": false,
+    "noClear": true,
+    "sessions": {
+        "crash-demo": [
+            [
+                {
+                    "name": "mock-baf",
+                    "icon": "database",
+                    "color": "terminal.ansiCyan",
+                    "message": "Mock BAF server (port 3001).",
+                    "cwd": "${workspaceFolder}/references/mock-baf",
+                    "focus": false,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd references/mock-baf && npm start"
+                    ]
+                },
+                {
+                    "name": "agent-connector",
+                    "icon": "plug",
+                    "color": "terminal.ansiMagenta",
+                    "message": "A2A Agent Connector (port 4004).",
+                    "cwd": "${workspaceFolder}/references/btp-a2a-dispute-resolution/agents/sap-agent-builder-a2a/agent-builder-a2a-agent-connector",
+                    "focus": false,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd references/btp-a2a-dispute-resolution/agents/sap-agent-builder-a2a/agent-builder-a2a-agent-connector && npm run watch"
+                    ]
+                },
+                {
+                    "name": "curl",
+                    "icon": "terminal",
+                    "color": "terminal.ansiYellow",
+                    "message": "Paste curl commands here from DEMO-INSTRUCTIONS.md",
+                    "cwd": "${workspaceFolder}",
+                    "focus": true,
+                    "autoExecuteCommands": false,
+                    "commands": []
+                }
+            ]
+        ],
+        "temporal-demo": [
+            [
+                {
+                    "name": "temporal-server",
+                    "icon": "server",
+                    "color": "terminal.ansiBlue",
+                    "message": "Temporal dev server (port 7233, UI 8233).",
+                    "cwd": "${workspaceFolder}",
+                    "focus": false,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "temporal server start-dev"
+                    ]
+                }
+            ],
+            [
+                {
+                    "name": "mock-baf",
+                    "icon": "database",
+                    "color": "terminal.ansiCyan",
+                    "message": "Mock BAF server (port 3001).",
+                    "cwd": "${workspaceFolder}/references/mock-baf",
+                    "focus": false,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd references/mock-baf && npm start"
+                    ]
+                },
+                {
+                    "name": "worker",
+                    "icon": "zap",
+                    "color": "terminal.ansiGreen",
+                    "message": "Temporal worker. Kill with Ctrl+C for recovery demo, then restart with npm start.",
+                    "cwd": "${workspaceFolder}/references/temporal-dispute-resolution",
+                    "focus": false,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd references/temporal-dispute-resolution && npm start"
+                    ]
+                },
+                {
+                    "name": "client",
+                    "icon": "terminal",
+                    "color": "terminal.ansiYellow",
+                    "message": "Run disputes here. See DEMO-INSTRUCTIONS.md § Durable Version.",
+                    "cwd": "${workspaceFolder}/references/temporal-dispute-resolution",
+                    "focus": true,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd references/temporal-dispute-resolution && npx ts-node src/client.ts 'Ali from XStore disputes order ORD0006. They ordered 1000 units but only received 900. Please investigate and resolve.'"
+                    ]
+                }
+            ]
+        ]
+    }
+}

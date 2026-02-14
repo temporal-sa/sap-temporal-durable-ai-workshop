@@ -3,3 +3,7 @@ dist/
 .env
 *.log
 .DS_Store
+
+# VS Code — ignore everything except shared Terminal Keeper sessions
+.vscode/*
+!.vscode/sessions.json
