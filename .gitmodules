@@ -1,0 +1,9 @@
+[submodule "references/temporal-training-exercise-python"]
+	path = references/temporal-training-exercise-python
+	url = https://github.com/temporal-sa/temporal-training-exercise-python.git
+[submodule "references/samples-typescript"]
+	path = references/samples-typescript
+	url = https://github.com/temporalio/samples-typescript.git
+[submodule "references/btp-a2a-dispute-resolution"]
+	path = references/btp-a2a-dispute-resolution
+	url = https://github.com/steveandroulakis/btp-a2a-dispute-resolution.git
