@@ -72,6 +72,62 @@
                 }
             ]
         ],
+        "exercise-2-haiku-agent": [
+            [
+                {
+                    "name": "ai-worker",
+                    "icon": "zap",
+                    "color": "terminal.ansiGreen",
+                    "message": "AI Worker for Exercise 2. Runs AiSdkPlugin on task queue: ai-sdk",
+                    "cwd": "${workspaceFolder}/intro-temporal-vercel-ai-tutorial",
+                    "focus": false,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd intro-temporal-vercel-ai-tutorial && npm run start:ai"
+                    ]
+                },
+                {
+                    "name": "client",
+                    "icon": "terminal",
+                    "color": "terminal.ansiYellow",
+                    "message": "Run haiku workflow: npm run workflow:ai:haiku",
+                    "cwd": "${workspaceFolder}/intro-temporal-vercel-ai-tutorial",
+                    "focus": true,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd intro-temporal-vercel-ai-tutorial && npm run workflow:ai:haiku"
+                    ]
+                }
+            ]
+        ],
+        "exercise-3-tools-agent": [
+            [
+                {
+                    "name": "ai-worker",
+                    "icon": "zap",
+                    "color": "terminal.ansiGreen",
+                    "message": "AI Worker for Exercise 3. Kill with Ctrl+C for crash demo, restart with: npm run start:ai",
+                    "cwd": "${workspaceFolder}/intro-temporal-vercel-ai-tutorial",
+                    "focus": false,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd intro-temporal-vercel-ai-tutorial && npm run start:ai"
+                    ]
+                },
+                {
+                    "name": "client",
+                    "icon": "terminal",
+                    "color": "terminal.ansiYellow",
+                    "message": "Run tools workflow: npm run workflow:ai:tools",
+                    "cwd": "${workspaceFolder}/intro-temporal-vercel-ai-tutorial",
+                    "focus": true,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd intro-temporal-vercel-ai-tutorial && npm run workflow:ai:tools"
+                    ]
+                }
+            ]
+        ],
         "temporal-demo": [
             [
                 {

@@ -8,10 +8,10 @@
 
 | Hour | Status |
 |---|---|
-| [Hour 1: Why Durability Matters](#hour-1-why-durability-matters) | Crash demo done; slides/presentation content TODO |
+| [Hour 1: Why Durability Matters](#hour-1-why-durability-matters) | Crash demo done — slides coming soon |
 | [Hour 2: Hands-On — Local Setup + AI SDK](#hour-2-hands-on--local-setup--ai-sdk) | Done — exercises in [`intro-temporal-vercel-ai-tutorial/`](https://github.com/steveandroulakis/intro-temporal-vercel-ai-tutorial) |
-| [Hour 3: Hands-On — Dispute Resolution w/ Durability](#hour-3-hands-on--dispute-resolution-w-durability) | Done |
-| [Hour 4: Vision and Discussion](#hour-4-vision-and-discussion) | TODO |
+| [Hour 3: Hands-On — Dispute Resolution w/ Durability](#hour-3-hands-on--dispute-resolution-w-durability) | Done — [Crash Demo (current SAP BafAgentClient)](DEMO-INSTRUCTIONS.md#part-1-crash-demo-hour-1) + [Durable Temporal Version](DEMO-INSTRUCTIONS.md#part-2-durable-version--temporal-hour-3) |
+| [Hour 4: Vision and Discussion](#hour-4-vision-and-discussion) | Open discussion — no fixed content yet |
 
 ## Key files and repos
 
