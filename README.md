@@ -15,26 +15,26 @@
 
 ## Key files and repos
 
-- **Demo instructions:** [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTIONS.md) — step-by-step for crash demo (Hour 1) and recovery demo (Hour 3)
-- **Original SAP repo:** [`references/btp-a2a-dispute-resolution/`](https://github.com/steveandroulakis/btp-a2a-dispute-resolution) — cloned from [SAP-samples/btp-a2a-dispute-resolution](https://github.com/SAP-samples/btp-a2a-dispute-resolution). Key file: `srv/BafAgentClient.ts`
-- **Mock BAF server:** [`references/mock-baf/`](references/mock-baf/) — Express on port 3001, simulates BAF polling state machine
-- **Temporal dispute resolution:** [`references/temporal-dispute-resolution/`](references/temporal-dispute-resolution/) — durable version of BafAgentClient (Hour 3 deliverable)
+- **Demo instructions:** [`DEMO-INSTRUCTIONS.md`](DEMO-INSTRUCTIONS.md) — step-by-step for crash demo (Hour 1) and recovery demo (Hour 3)
+- **Original SAP repo:** [`btp-a2a-dispute-resolution/`](https://github.com/steveandroulakis/btp-a2a-dispute-resolution) — cloned from [SAP-samples/btp-a2a-dispute-resolution](https://github.com/SAP-samples/btp-a2a-dispute-resolution). Key file: `srv/BafAgentClient.ts`
+- **Mock BAF server:** [`mock-baf/`](mock-baf/) — Express on port 3001, simulates BAF polling state machine
+- **Temporal dispute resolution:** [`temporal-dispute-resolution/`](temporal-dispute-resolution/) — durable version of BafAgentClient (Hour 3 deliverable)
 - **Hour 2 exercises:** [`intro-temporal-vercel-ai-tutorial/`](https://github.com/steveandroulakis/intro-temporal-vercel-ai-tutorial) — git submodule. 3 exercises: Hello World, Haiku Agent, Tools Agent. Starter code + solutions + lesson markdown
-- **TS samples (Hour 2 reference):** [`references/samples-typescript/`](https://github.com/temporalio/samples-typescript) — hello-world (`hello-world/`), ai-sdk haiku + tools agents (`ai-sdk/`)
+- **TS samples (Hour 2 reference):** [`resources/samples-typescript/`](https://github.com/temporalio/samples-typescript) — hello-world (`hello-world/`), ai-sdk haiku + tools agents (`ai-sdk/`)
 - **Customer ask:** [`resources/customer-ask-extracted.md`](resources/customer-ask-extracted.md) (extracted from [`resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf`](resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf))
 
 ## Hour 1: Why Durability Matters
 
 Live crash demo showing the vulnerability in `BafAgentClient.ts`, then Temporal intro and discussion.
 
-> **Run it:** [`references/DEMO-INSTRUCTIONS.md` — Part 1: Crash Demo](references/DEMO-INSTRUCTIONS.md#part-1-crash-demo)
+> **Run it:** [`DEMO-INSTRUCTIONS.md` — Part 1: Crash Demo](DEMO-INSTRUCTIONS.md#part-1-crash-demo)
 
 ### Crash Demo
 
 Uses the mock BAF server + SAP agent connector. Three terminals:
 
-1. **Mock BAF** (`references/mock-baf/`) — Express server on port 3001, simulates BAF polling state machine (polls 1-4 → pending, 5-11 → running, 12+ → success)
-2. **Agent Connector** (`references/btp-a2a-dispute-resolution/.../agent-builder-a2a-agent-connector/`) — CDS server on port 4004, runs `BafAgentClient.ts`
+1. **Mock BAF** (`mock-baf/`) — Express server on port 3001, simulates BAF polling state machine (polls 1-4 → pending, 5-11 → running, 12+ → success)
+2. **Agent Connector** (`btp-a2a-dispute-resolution/.../agent-builder-a2a-agent-connector/`) — CDS server on port 4004, runs `BafAgentClient.ts`
 3. **Client terminal** — curl sends A2A `message/send` request to trigger a dispute
 
 ### Demo flow
@@ -61,7 +61,7 @@ Uses the mock BAF server + SAP agent connector. Three terminals:
 - BAF chat still exists server-side but connector can't find or resume it
 - **This is what Temporal solves** — workflow replaces the loop, timers survive crashes, full execution history persisted
 
-Full step-by-step: [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTIONS.md) (sections 1-6)
+Full step-by-step: [`DEMO-INSTRUCTIONS.md`](DEMO-INSTRUCTIONS.md) (sections 1-6)
 
 ### TODO: Additional content from customer ask (likely slides)
 
@@ -104,9 +104,9 @@ LLM + function calling, fully durable. Fill in TODOs for `getWeather` Activity a
 
 ## Hour 3: Hands-On — Dispute Resolution w/ Durability
 
-Separate project from Hour 2. The BafAgentClient polling loop re-architected with Temporal. Delivered as a complete working project (`references/temporal-dispute-resolution/`). Same BAF HTTP calls, now durable.
+Separate project from Hour 2. The BafAgentClient polling loop re-architected with Temporal. Delivered as a complete working project (`temporal-dispute-resolution/`). Same BAF HTTP calls, now durable.
 
-> **Run it:** [`references/DEMO-INSTRUCTIONS.md` — Part 2: Durable Version](references/DEMO-INSTRUCTIONS.md#part-2-durable-version--temporal-dispute-resolution)
+> **Run it:** [`DEMO-INSTRUCTIONS.md` — Part 2: Durable Version](DEMO-INSTRUCTIONS.md#part-2-durable-version--temporal-dispute-resolution)
 
 ### The problem (walkthrough from Hour 1)
 
@@ -114,7 +114,7 @@ Recap `BafAgentClient.ts` crash vulnerability — `chatId`/`historyId` in local 
 
 ### Mock BAF server
 
-Same server from Hour 1 crash demo (`references/mock-baf/`). Express on port 3001, simulates BAF polling state machine. Per-chat poll counter drives deterministic state transitions: polls 1-4 → `pending`, 5-11 → `running`, 12+ → `success`.
+Same server from Hour 1 crash demo (`mock-baf/`). Express on port 3001, simulates BAF polling state machine. Per-chat poll counter drives deterministic state transitions: polls 1-4 → `pending`, 5-11 → `running`, 12+ → `success`.
 
 Endpoints:
 - `POST /api/v1/Agents(:agentId)/chats` → create chat, return `chatId`
@@ -175,8 +175,8 @@ Status exposed via `defineQuery('getStatus')` — queryable with `temporal workf
 
 1. **Walk through the mapping** — show how each piece of `BafAgentClient.ts` maps to workflows/activities
 2. **Start Temporal dev server** — `temporal server start-dev`
-3. **Start mock BAF** — `cd references/mock-baf && npm start`
-4. **Start worker** — `cd references/temporal-dispute-resolution && npm start`
+3. **Start mock BAF** — `cd mock-baf && npm start`
+4. **Start worker** — `cd temporal-dispute-resolution && npm start`
 5. **Run a dispute** — `npx ts-node src/client.ts 'Ali from XStore disputes order ORD0006...'` — watch it complete (~18s)
 6. **Query status** — `temporal workflow query --workflow-id <id> --name getStatus`
 7. **RECOVERY DEMO: Worker crash** — start another dispute, `pkill -9 -f "temporal-dispute-resolution.*worker"` after Poll #3-4, verify workflow still RUNNING on server, restart worker, watch it replay + resume + complete
@@ -208,7 +208,7 @@ Same code structure as BafAgentClient (`while(true)`, poll, sleep, switch on sta
 
 The BAF agent is an opaque box with no real tools — it fakes S/4HANA lookups via prompt. Contrast with Hour 2's agent where every tool call is an individually durable, retryable, observable Activity. Natural bridge to Hour 4's "what if this was built natively with Temporal?" discussion.
 
-Full step-by-step: [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTIONS.md) (sections 6-9 for recovery demos)
+Full step-by-step: [`DEMO-INSTRUCTIONS.md`](DEMO-INSTRUCTIONS.md) (sections 6-9 for recovery demos)
 
 ## Hour 4: Vision and Discussion
 

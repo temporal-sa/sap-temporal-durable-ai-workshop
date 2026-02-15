@@ -57,4 +57,4 @@ The PDF (page 5) shows SAP's adapter standalone without Temporal. The hands-on e
 
 ## Source
 
-Full Temporal AI SDK docs: `resources/AI SDK by Vercel integration.md`
+Full Temporal AI SDK docs: `AI SDK by Vercel integration.md`

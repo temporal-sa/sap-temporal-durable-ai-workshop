@@ -1,6 +1,6 @@
 # BafAgentClient.ts Analysis
 
-Source: `references/btp-a2a-dispute-resolution/agents/sap-agent-builder-a2a/agent-builder-a2a-agent-connector/srv/BafAgentClient.ts`
+Source: `../btp-a2a-dispute-resolution/agents/sap-agent-builder-a2a/agent-builder-a2a-agent-connector/srv/BafAgentClient.ts`
 
 ## What It Does
 

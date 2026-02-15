@@ -4,7 +4,7 @@
 
 ### 1. Python 7-Exercise Series (cloned)
 
-**Repo:** `references/temporal-training-exercise-python/`
+**Repo:** `temporal-training-exercise-python/`
 **Source:** `github.com/temporal-sa/temporal-training-exercise-python`
 
 | Exercise | Duration | Topic |
@@ -41,7 +41,7 @@ Covers: testing, debugging, deploying. Common developer problems + solutions.
 
 ### 4. TypeScript Samples (cloned)
 
-**Repo:** `references/samples-typescript/`
+**Repo:** `samples-typescript/`
 **Source:** `github.com/temporalio/samples-typescript`
 
 Key sample for workshop: `ai-sdk/` — demonstrates `@temporalio/ai-sdk` with Vercel AI SDK. Contains:
@@ -57,5 +57,5 @@ Other potentially useful samples: `hello-world/`, `signals-queries/`, `timer/`, 
 |------|-----------|
 | Progressive TS exercises (hello → signals → queries → testing) | No — Python only. Must port. |
 | AI SDK + Temporal TS sample | Yes — `samples-typescript/ai-sdk/` |
-| SAP adapter + Temporal integration | Documented in `references/temporal-ai-sdk-and-sap-adapter.md` |
-| Dispute resolution durable version | Must build — see `references/baf-agent-client-analysis.md` |
+| SAP adapter + Temporal integration | Documented in `temporal-ai-sdk-and-sap-adapter.md` |
+| Dispute resolution durable version | Must build — see `baf-agent-client-analysis.md` |

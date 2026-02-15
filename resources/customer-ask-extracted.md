@@ -1,6 +1,6 @@
 # SAP x Temporal Workshop — Customer Ask (Definitive)
 
-Source: `resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf`
+Source: `d318488c-cf46-43d1-bf54-0b424c37f02a.pdf`
 Classification: INTERNAL — SAP and External Parties under NDA Only
 Date: 2026-02-11
 

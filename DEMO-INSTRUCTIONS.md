@@ -43,7 +43,7 @@ Demonstrates the crash vulnerability in [`BafAgentClient.ts`](btp-a2a-dispute-re
 ## 1. Start the Mock BAF Server ([`server.ts`](mock-baf/server.ts))
 
 ```bash
-cd references/mock-baf
+cd mock-baf
 npm install
 npm start
 ```
@@ -65,7 +65,7 @@ curl -s -X POST http://localhost:3001/oauth/token | jq .
 In a **second terminal**:
 
 ```bash
-cd references/btp-a2a-dispute-resolution/agents/sap-agent-builder-a2a/agent-builder-a2a-agent-connector
+cd btp-a2a-dispute-resolution/agents/sap-agent-builder-a2a/agent-builder-a2a-agent-connector
 npm install
 npm run watch
 ```
@@ -221,7 +221,7 @@ Web UI: http://localhost:8233
 Same server used in the crash demo (if still running, skip this step):
 
 ```bash
-cd references/mock-baf
+cd mock-baf
 npm install
 npm start
 ```
@@ -231,7 +231,7 @@ npm start
 In a **new terminal**:
 
 ```bash
-cd references/temporal-dispute-resolution
+cd temporal-dispute-resolution
 npm install
 npm start
 ```
@@ -247,7 +247,7 @@ Temporal UI: http://localhost:8233
 In another terminal:
 
 ```bash
-cd references/temporal-dispute-resolution
+cd temporal-dispute-resolution
 npx ts-node src/client.ts 'Ali from XStore disputes order ORD0006. They ordered 1000 units but only received 900. Please investigate and resolve.'
 ```
 
@@ -281,7 +281,7 @@ Returns the current status string (e.g., `running (poll #7): Analyzing dispute..
 This is the key teaching moment. Start another dispute:
 
 ```bash
-cd references/temporal-dispute-resolution
+cd temporal-dispute-resolution
 npx ts-node src/client.ts 'Recovery test dispute' &
 ```
 
@@ -306,7 +306,7 @@ temporal workflow describe --workflow-id <workflow-id>
 ### Restart the worker:
 
 ```bash
-cd references/temporal-dispute-resolution
+cd temporal-dispute-resolution
 npm start
 ```
 
@@ -325,7 +325,7 @@ Different failure mode: the BAF service itself goes down. In production, this is
 Start another dispute:
 
 ```bash
-cd references/temporal-dispute-resolution
+cd temporal-dispute-resolution
 npx ts-node src/client.ts 'Downstream outage test' &
 ```
 
@@ -345,7 +345,7 @@ Open the **Temporal UI** (http://localhost:8233) — click into the workflow and
 ### Restart mock BAF:
 
 ```bash
-cd references/mock-baf
+cd mock-baf
 npm start
 ```
 

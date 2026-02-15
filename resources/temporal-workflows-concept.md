@@ -135,4 +135,4 @@ The `BafAgentClient.ts` polling loop maps directly to a Temporal Workflow:
 - HTTP calls to BAF → Activities (auto-retried)
 - `chatId`/`historyId` → Workflow state (persisted in Event History)
 
-See `references/baf-agent-client-analysis.md` for full mapping.
+See `baf-agent-client-analysis.md` for full mapping.
