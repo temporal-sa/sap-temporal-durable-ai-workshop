@@ -53,7 +53,7 @@ The key teaching moment — proving durability:
 5. Restart the worker: `npm start`
 6. Watch the workflow resume and complete — no duplicate chat creation, no lost state
 
-Full instructions: [`DEMO-INSTRUCTIONS.md`](../DEMO-INSTRUCTIONS.md) § "Durable Version: Temporal Dispute Resolution"
+Full instructions: [`demo-durable-dispute-resolution.md`](../demo-durable-dispute-resolution.md)
 
 ## Project Structure
 

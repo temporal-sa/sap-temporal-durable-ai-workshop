@@ -28,7 +28,9 @@ Durable AI Agents for SAP. 4-hour workshop for SAP architects introducing Tempor
 - `btp-a2a-dispute-resolution/` — cloned SAP dispute resolution repo. Used in Hour 1 crash demo: run agent connector + mock BAF, trigger dispute, kill mid-poll → all state lost (`chatId`, `historyId`, loop position). Key file: `srv/BafAgentClient.ts` (`while(true)` polling loop, no persistence)
 - `mock-baf/` — Mock BAF server (Express, port 3001) simulating SAP BAF polling state machine for crash demo without real credentials
 - `temporal-dispute-resolution/` — Temporal durable version of BafAgentClient polling loop (Hour 3 deliverable). Same HTTP calls, crash-recoverable. Uses mock BAF.
-- `DEMO-INSTRUCTIONS.md` — step-by-step guide: crash demo (mock BAF + agent connector + kill) AND durable Temporal version (Temporal server + mock BAF + worker + client + recovery demo)
+- `demo-crash-vulnerability.md` — step-by-step crash demo (Hour 1): mock BAF + agent connector + kill
+- `demo-durable-dispute-resolution.md` — step-by-step durable Temporal version (Hour 3): Temporal server + mock BAF + worker + client + recovery demos
+- `architecture.md` — Hour 3 architecture reference: mapping tables, activity/workflow breakdown, pseudocode
 - `intro-temporal-vercel-ai-tutorial/` — **Hour 2 exercises** (git submodule → [steveandroulakis/intro-temporal-vercel-ai-tutorial](https://github.com/steveandroulakis/intro-temporal-vercel-ai-tutorial)). 3 exercises: Hello World, Haiku Agent, Tools Agent. Starter code with TODOs + solutions + lesson markdown
 
 ## Audience

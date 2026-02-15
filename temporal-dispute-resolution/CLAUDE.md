@@ -27,7 +27,7 @@ npm start          # start worker
 npx ts-node src/client.ts 'dispute message...'  # start workflow
 ```
 
-Full step-by-step including recovery demo: `../DEMO-INSTRUCTIONS.md` § "Durable Version: Temporal Dispute Resolution"
+Full step-by-step including recovery demo: [`../demo-durable-dispute-resolution.md`](../demo-durable-dispute-resolution.md)
 
 VS Code Terminal Keeper session: `.vscode/sessions.json` → `temporal-demo`
 

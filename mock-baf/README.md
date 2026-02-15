@@ -40,4 +40,4 @@ curl -s -X POST http://localhost:3001/api/v1/Agents\(mock-agent-001\)/chats \
   -H "Content-Type: application/json" -d '{"name":"test"}' | jq .
 ```
 
-See [DEMO-INSTRUCTIONS.md](../DEMO-INSTRUCTIONS.md) for the full end-to-end crash demo.
+See [demo-crash-vulnerability.md](../demo-crash-vulnerability.md) for the full end-to-end crash demo.
