@@ -1,7 +1,7 @@
 {
     "$schema": "https://cdn.statically.io/gh/nguyenngoclongdev/cdn/main/schema/v11/terminal-keeper.json",
     "theme": "tribe",
-    "active": "temporal-demo",
+    "active": "crash-demo",
     "activateOnStartup": true,
     "keepExistingTerminals": false,
     "noClear": true,
@@ -41,6 +41,34 @@
                     "focus": true,
                     "autoExecuteCommands": false,
                     "commands": []
+                }
+            ]
+        ],
+        "exercise-1-hello-world": [
+            [
+                {
+                    "name": "worker",
+                    "icon": "zap",
+                    "color": "terminal.ansiGreen",
+                    "message": "Temporal worker for Exercise 1. Kill with Ctrl+C for crash demo, restart with: npm start",
+                    "cwd": "${workspaceFolder}/intro-temporal-vercel-ai-tutorial",
+                    "focus": false,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd intro-temporal-vercel-ai-tutorial && npm start"
+                    ]
+                },
+                {
+                    "name": "client",
+                    "icon": "terminal",
+                    "color": "terminal.ansiYellow",
+                    "message": "Run workflows here: npm run workflow",
+                    "cwd": "${workspaceFolder}/intro-temporal-vercel-ai-tutorial",
+                    "focus": true,
+                    "autoExecuteCommands": false,
+                    "commands": [
+                        "cd intro-temporal-vercel-ai-tutorial && npm run workflow"
+                    ]
                 }
             ]
         ],
