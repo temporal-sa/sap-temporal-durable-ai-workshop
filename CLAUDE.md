@@ -5,7 +5,7 @@ Durable AI Agents for SAP. 4-hour workshop for SAP architects introducing Tempor
 ## Workshop Structure
 
 - **Hour 1**: Why durability matters — problem space, Temporal intro, crash vulnerability in existing SAP Dispute Resolution agent
-- **Hour 2**: Hands-on setup — Hello World (TS), Vercel AI SDK + Temporal `@temporalio/ai-sdk`, durable agent w/ tools. **Exercises: [`intro-temporal-vercel-ai-tutorial/`](intro-temporal-vercel-ai-tutorial/)** (git submodule)
+- **Hour 2**: Hands-on setup — Hello World (TS), Vercel AI SDK + Temporal `@temporalio/ai-sdk`, durable agent w/ tools. **Exercises: [`intro-temporal-vercel-ai-tutorial/`](https://github.com/steveandroulakis/intro-temporal-vercel-ai-tutorial)** (git submodule)
 - **Hour 3**: Hands-on — make the Dispute Resolution polling loop durable with Temporal (workflows, activities, worker, client, failure recovery)
 - **Hour 4**: Vision/discussion — service integration, agent dev toolkit, durability in Joule core
 
