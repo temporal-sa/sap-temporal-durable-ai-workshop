@@ -7,3 +7,5 @@ dist/
 # VS Code — ignore everything except shared Terminal Keeper sessions
 .vscode/*
 !.vscode/sessions.json
+
+tmp-resources/

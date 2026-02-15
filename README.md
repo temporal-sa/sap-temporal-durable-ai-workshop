@@ -1,6 +1,6 @@
 # SAP x Temporal Workshop — Durable AI Agents for SAP
 
-4-hour workshop for SAP architects introducing Temporal as a durable execution platform for SAP agents. Participants build progressively — from Hello World to crashing and recovering a real SAP dispute resolution workflow.
+4-hour workshop for SAP architects introducing Temporal as a durable execution platform for SAP agents. Using the Temporal TypeScript SDK, participants make SAP's [btp-a2a-dispute-resolution](https://github.com/SAP-samples/btp-a2a-dispute-resolution) app crash-proof and build durable AI agents with the [Vercel AI SDK](https://sdk.vercel.ai/) + [Temporal AI SDK integration](https://docs.temporal.io/develop/typescript/ai-agent-frameworks#vercel-ai-sdk).
 
 **Audience:** SAP senior developers, no prior Temporal experience. **Language:** TypeScript.
 
@@ -20,8 +20,6 @@
 - **Mock BAF server:** [`mock-baf/`](mock-baf/) — Express on port 3001, simulates BAF polling state machine
 - **Temporal dispute resolution:** [`temporal-dispute-resolution/`](temporal-dispute-resolution/) — durable version of BafAgentClient (Hour 3 deliverable)
 - **Hour 2 exercises:** [`intro-temporal-vercel-ai-tutorial/`](https://github.com/steveandroulakis/intro-temporal-vercel-ai-tutorial) — git submodule. 3 exercises: Hello World, Haiku Agent, Tools Agent. Starter code + solutions + lesson markdown
-- **TS samples (Hour 2 reference):** [`resources/samples-typescript/`](https://github.com/temporalio/samples-typescript) — hello-world (`hello-world/`), ai-sdk haiku + tools agents (`ai-sdk/`)
-- **Customer ask:** [`resources/customer-ask-extracted.md`](resources/customer-ask-extracted.md) (extracted from [`resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf`](resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf))
 
 ## Hour 1: Why Durability Matters
 

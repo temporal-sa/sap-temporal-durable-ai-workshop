@@ -23,23 +23,12 @@ Durable AI Agents for SAP. 4-hour workshop for SAP architects introducing Tempor
 
 **`README.md`** is the definitive per-hour breakdown of what's been built and what's left to do. Check this first for current state of each hour.
 
-## CRITICAL: Definitive Customer Ask
-
-**`resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf`** is THE definitive ask from the customer. All workshop planning must conform to this document. Extracted to **`resources/customer-ask-extracted.md`** for easy reference. If agenda discussions drift, defer to this PDF.
-
 ## References
 
-- `resources/temporal-ai-sdk-and-sap-adapter.md` — how Temporal's `@temporalio/ai-sdk` and SAP's `@sap/ai-sdk-vercel-adapter` compose together (core pattern for Hours 2-3)
-- `resources/baf-agent-client-analysis.md` — BafAgentClient.ts crash vulnerability analysis + Temporal mapping + durable version sketch
-- `resources/training-exercises-overview.md` — available training repos (Python 7-exercise, TS edu-101/102, TS samples) with gap analysis
 - `btp-a2a-dispute-resolution/` — cloned SAP dispute resolution repo. Used in Hour 1 crash demo: run agent connector + mock BAF, trigger dispute, kill mid-poll → all state lost (`chatId`, `historyId`, loop position). Key file: `srv/BafAgentClient.ts` (`while(true)` polling loop, no persistence)
-- `resources/temporal-training-exercise-python/` — cloned 7-exercise Python training series (basis for TS port)
-- `resources/samples-typescript/` — cloned Temporal TS samples repo (ai-sdk/ sample is key)
 - `mock-baf/` — Mock BAF server (Express, port 3001) simulating SAP BAF polling state machine for crash demo without real credentials
 - `temporal-dispute-resolution/` — Temporal durable version of BafAgentClient polling loop (Hour 3 deliverable). Same HTTP calls, crash-recoverable. Uses mock BAF.
 - `DEMO-INSTRUCTIONS.md` — step-by-step guide: crash demo (mock BAF + agent connector + kill) AND durable Temporal version (Temporal server + mock BAF + worker + client + recovery demo)
-- `resources/temporal-ts-local-dev-setup.md` — TS SDK local dev setup guide (CLI, project scaffold, hello world)
-- `resources/temporal-workflows-concept.md` — core Workflows concepts (definitions, Activities, determinism, timers, signals)
 - `intro-temporal-vercel-ai-tutorial/` — **Hour 2 exercises** (git submodule → [steveandroulakis/intro-temporal-vercel-ai-tutorial](https://github.com/steveandroulakis/intro-temporal-vercel-ai-tutorial)). 3 exercises: Hello World, Haiku Agent, Tools Agent. Starter code with TODOs + solutions + lesson markdown
 
 ## Audience
