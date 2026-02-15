@@ -9,7 +9,7 @@
 | Hour | Status |
 |---|---|
 | [Hour 1: Why Durability Matters](#hour-1-why-durability-matters) | Crash demo done; slides/presentation content TODO |
-| [Hour 2: Hands-On — Local Setup + AI SDK](#hour-2-hands-on--local-setup--ai-sdk) | TODO — reference samples exist, exercise scaffolding needed |
+| [Hour 2: Hands-On — Local Setup + AI SDK](#hour-2-hands-on--local-setup--ai-sdk) | Done — exercises in [`intro-temporal-vercel-ai-tutorial/`](intro-temporal-vercel-ai-tutorial/) |
 | [Hour 3: Hands-On — Dispute Resolution w/ Durability](#hour-3-hands-on--dispute-resolution-w-durability) | Done |
 | [Hour 4: Vision and Discussion](#hour-4-vision-and-discussion) | TODO |
 
@@ -19,7 +19,8 @@
 - **Original SAP repo:** [`references/btp-a2a-dispute-resolution/`](references/btp-a2a-dispute-resolution/) — cloned from [SAP-samples/btp-a2a-dispute-resolution](https://github.com/SAP-samples/btp-a2a-dispute-resolution). Key file: [`srv/BafAgentClient.ts`](references/btp-a2a-dispute-resolution/agents/sap-agent-builder-a2a/agent-builder-a2a-agent-connector/srv/BafAgentClient.ts)
 - **Mock BAF server:** [`references/mock-baf/`](references/mock-baf/) — Express on port 3001, simulates BAF polling state machine
 - **Temporal dispute resolution:** [`references/temporal-dispute-resolution/`](references/temporal-dispute-resolution/) — durable version of BafAgentClient (Hour 3 deliverable)
-- **TS samples (Hour 2 basis):** [`references/samples-typescript/`](references/samples-typescript/) — hello-world (`hello-world/`), ai-sdk haiku + tools agents (`ai-sdk/`)
+- **Hour 2 exercises:** [`intro-temporal-vercel-ai-tutorial/`](intro-temporal-vercel-ai-tutorial/) — git submodule ([repo](https://github.com/steveandroulakis/intro-temporal-vercel-ai-tutorial)). 3 exercises: Hello World, Haiku Agent, Tools Agent. Starter code + solutions + lesson markdown
+- **TS samples (Hour 2 reference):** [`references/samples-typescript/`](references/samples-typescript/) — hello-world (`hello-world/`), ai-sdk haiku + tools agents (`ai-sdk/`)
 - **Customer ask:** [`resources/customer-ask-extracted.md`](resources/customer-ask-extracted.md) (extracted from [`resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf`](resources/d318488c-cf46-43d1-bf54-0b424c37f02a.pdf))
 
 ## Hour 1: Why Durability Matters
@@ -72,47 +73,34 @@ Full step-by-step: [`references/DEMO-INSTRUCTIONS.md`](references/DEMO-INSTRUCTI
 
 ## Hour 2: Hands-On — Local Setup + AI SDK
 
-_TODO: exercise scaffolding needed. Reference implementations exist in [`references/samples-typescript/`](references/samples-typescript/) (hello-world, ai-sdk). Need to create participant-facing exercises, wire up LiteLLM as credential-free model provider._
+**Exercises:** [`intro-temporal-vercel-ai-tutorial/`](intro-temporal-vercel-ai-tutorial/) (git submodule — [repo](https://github.com/steveandroulakis/intro-temporal-vercel-ai-tutorial))
 
-Three exercises, escalating complexity:
+Three exercises, escalating complexity. Single project, lesson-style markdown guides. Participants bring their own LLM API key (OpenAI, Anthropic, or Google) and use Vercel AI SDK provider adapters directly.
 
-### Exercise 2.1: Hello World
+### Exercise 1: Hello World (~25 min)
 
-Pure Temporal basics. No AI. Teaches the mechanics.
+Pure Temporal basics. No AI. Complete starter code — participants run, modify, then crash + recover.
 
-- **Build:** Workflow, Activity, Worker, Client (TypeScript)
-- **Run:** Start Temporal dev server, run worker, execute workflow via client
-- **Learn:** What a Workflow is, what an Activity is, how they connect, Temporal UI
-- **Source basis:** `samples-typescript/hello-world/` or TS equivalent of Python exercise 1
+- **Run:** Start Temporal dev server, worker, client → "Hello, Temporal!"
+- **Modify:** Add `sleep('10s')` durable timer + `goodbye` Activity
+- **Crash demo:** Make `goodbye` throw → observe retries → kill worker → fix error → restart → Workflow resumes from last checkpoint
+- **Learn:** Workflows, Activities, Workers, Clients, durable timers, event history, crash recovery
 
-### Exercise 2.2: Haiku Agent (Durable LLM Call)
+### Exercise 2: Haiku Agent (~15 min)
 
-Add AI. Swap the Hello World activity for a `generateText()` call.
+Add AI. Fill in TODOs to configure `AiSdkPlugin` and implement `haikuAgent`.
 
-- **Build:** Workflow that calls `generateText()` via `@temporalio/ai-sdk` plugin
-- **Model provider:** LiteLLM (stands in for `@sap/ai-sdk-vercel-adapter` — no SAP credentials needed)
-- **Learn:** `AiSdkPlugin` auto-wraps LLM calls as Activities; crash mid-LLM-call → Temporal retries
-- **Source basis:** `samples-typescript/ai-sdk/` — `haikuAgent` workflow
+- **Build:** Configure AI Worker with `AiSdkPlugin` + provider, implement `haikuAgent` with `generateText()`
+- **Learn:** `AiSdkPlugin` auto-wraps LLM calls as Activities — 2-line change from standard Vercel AI SDK code
+- **Observe:** LLM call visible as Activity in Temporal UI with full input/output
 
-### Exercise 2.3: Durable Agent with Tools
+### Exercise 3: Tools Agent (~15 min)
 
-LLM + function calling, fully durable.
+LLM + function calling, fully durable. Fill in TODOs for `getWeather` Activity and `toolsAgent` Workflow.
 
-- **Build:** Workflow with `generateText()` + `tools` (e.g. `getWeather` with Zod schema)
-- **How it works:** LLM decides when to call tools → tool executions are Temporal Activities → retryable, observable, crash-safe
-- **Agent loop:** LLM calls tool → gets result → reasons → maybe calls another → responds. Capped with `stopWhen: stepCountIs(5)`
-- **Learn:** Tool calls as Activities, multi-step agent reasoning, observability in Temporal UI
-- **Source basis:** `samples-typescript/ai-sdk/` — `toolsAgent` workflow
-
-### Hour 2 model provider note
-
-The PDF shows the SAP adapter pattern:
-```ts
-import { createSAPAI } from '@sap/ai-sdk-vercel-adapter';
-const sapai = createSAPAI();
-// model: sapai.languageModel('anthropic--claude-4.5-sonnet')
-```
-For the workshop, LiteLLM replaces this since participants may not have SAP Gen AI Hub credentials. Same Vercel AI SDK interface, different provider. Swap is trivial.
+- **Build:** `getWeather` Activity + `toolsAgent` with `tool()`, Zod schema, `stopWhen: stepCountIs(5)`
+- **Crash demo:** Kill worker mid-agent-loop → restart → completed LLM/tool calls replayed, agent resumes
+- **Learn:** Tool calls as Activities, multi-step agent reasoning, full observability in Temporal UI
 
 ## Hour 3: Hands-On — Dispute Resolution w/ Durability
 
