@@ -4,6 +4,12 @@
 
 **Audience:** SAP senior developers, no prior Temporal experience. **Language:** TypeScript.
 
+## Setup
+
+```bash
+git clone --recurse-submodules https://github.com/temporal-sa/sap-temporal-durable-ai-workshop.git
+```
+
 ## Status
 
 | Hour | Status |
@@ -18,7 +24,7 @@
 - **Hour 1 demo:** [`demo-crash-vulnerability.md`](demo-crash-vulnerability.md) — crash demo step-by-step
 - **Hour 3 demo:** [`demo-durable-dispute-resolution.md`](demo-durable-dispute-resolution.md) — Temporal recovery demo step-by-step
 - **Hour 3 architecture:** [`architecture.md`](architecture.md) — mapping tables, activity/workflow breakdown, pseudocode
-- **Original SAP repo:** [`btp-a2a-dispute-resolution/`](https://github.com/steveandroulakis/btp-a2a-dispute-resolution) — cloned from [SAP-samples/btp-a2a-dispute-resolution](https://github.com/SAP-samples/btp-a2a-dispute-resolution). Key file: `srv/BafAgentClient.ts`
+- **Original SAP repo:** [`btp-a2a-dispute-resolution/`](https://github.com/temporal-sa/btp-a2a-dispute-resolution) — cloned from [SAP-samples/btp-a2a-dispute-resolution](https://github.com/SAP-samples/btp-a2a-dispute-resolution). Key file: `srv/BafAgentClient.ts`
 - **Mock BAF server:** [`mock-baf/`](mock-baf/) — Express on port 3001, simulates BAF polling state machine
 - **Temporal dispute resolution:** [`temporal-dispute-resolution/`](temporal-dispute-resolution/) — durable version of BafAgentClient (Hour 3 deliverable)
 - **Hour 2 exercises:** [`intro-temporal-vercel-ai-tutorial/`](https://github.com/steveandroulakis/intro-temporal-vercel-ai-tutorial) — git submodule. 3 exercises: Hello World, Haiku Agent, Tools Agent. Starter code + solutions + lesson markdown

@@ -1,6 +1,6 @@
 [submodule "references/btp-a2a-dispute-resolution"]
 	path = btp-a2a-dispute-resolution
-	url = https://github.com/steveandroulakis/btp-a2a-dispute-resolution.git
+	url = https://github.com/temporal-sa/btp-a2a-dispute-resolution.git
 [submodule "intro-temporal-vercel-ai-tutorial"]
 	path = intro-temporal-vercel-ai-tutorial
 	url = https://github.com/steveandroulakis/intro-temporal-vercel-ai-tutorial.git
