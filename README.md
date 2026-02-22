@@ -10,6 +10,8 @@
 git clone --recurse-submodules https://github.com/temporal-sa/sap-temporal-durable-ai-workshop.git
 ```
 
+> **Participants: complete [`PREFLIGHT.md`](PREFLIGHT.md) before the workshop.** Verifies Node version, npm install, TypeScript compilation, and a Hello World workflow end-to-end (~15 min). Catches dependency and bundling issues before they stall you on the day.
+
 ## Status
 
 | Hour | Status |
