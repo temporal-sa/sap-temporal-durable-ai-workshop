@@ -108,3 +108,14 @@ Same BAF polling logic from Hour 1, now orchestrated by Temporal. Kill the worke
 ## Hour 4: Vision and Discussion
 
 _TODO: define — service integration, agent dev toolkit, durability in Joule core_
+
+Suggestions - pluggable integration with TEmporal frameworks.  (OpenAI integration or pydantic AI done by Pydantic...)
+DSL - serverless if they want to avoid dev requirement. (ziglfow links)
+Nexus - corss domain and scale.
+MCP access to drive existing workflows.
+When not to use temporal?  (workflow decision tree....)
+Replay slide....
+
+
+
+
