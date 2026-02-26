@@ -1,7 +1,7 @@
 {
     "$schema": "https://cdn.statically.io/gh/nguyenngoclongdev/cdn/main/schema/v11/terminal-keeper.json",
     "theme": "tribe",
-    "active": "temporal-demo",
+    "active": "exercise-1-hello-world",
     "activateOnStartup": true,
     "keepExistingTerminals": false,
     "noClear": true,
